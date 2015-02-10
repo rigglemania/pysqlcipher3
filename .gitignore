@@ -13,8 +13,6 @@ develop-eggs/
 dist/
 downloads/
 eggs/
-lib/
-lib64/
 parts/
 sdist/
 var/
@@ -43,9 +41,6 @@ coverage.xml
 # Translations
 *.mo
 *.pot
-
-# Django stuff:
-*.log
 
 # Sphinx documentation
 docs/_build/
