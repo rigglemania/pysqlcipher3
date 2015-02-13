@@ -23,7 +23,7 @@
 # 3. This notice may not be removed or altered from any source distribution.
 
 import unittest
-import sqlite3 as sqlite
+import pysqlcipher3.dbapi2 as sqlite
 
 def func_returntext():
     return "foo"

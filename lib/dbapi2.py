@@ -1,6 +1,8 @@
-# pysqlite2/dbapi2.py: the DB-API 2.0 interface
+# pysqlcipher3/dbapi2.py: the DB-API 2.0 interface with SQLCipher support
 #
-# Copyright (C) 2004-2005 Gerhard Häring <gh@ghaering.de>
+# Copyright (C) David Riggleman <davidriggleman@gmail.com>
+# Copyright (C) Kali Kaneko <kali@futeisha.org>
+# Copyright (C) 2010 Gerhard Häring <gh@ghaering.de>
 #
 # This file is part of pysqlite.
 #
@@ -24,7 +26,7 @@ import datetime
 import time
 import collections.abc
 
-from _sqlite3 import *
+from pysqlcipher3._sqlite3 import *
 
 paramstyle = "qmark"
 
@@ -38,20 +40,25 @@ Time = datetime.time
 
 Timestamp = datetime.datetime
 
+
 def DateFromTicks(ticks):
     return Date(*time.localtime(ticks)[:3])
+
 
 def TimeFromTicks(ticks):
     return Time(*time.localtime(ticks)[3:6])
 
+
 def TimestampFromTicks(ticks):
     return Timestamp(*time.localtime(ticks)[:6])
+
 
 version_info = tuple([int(x) for x in version.split(".")])
 sqlite_version_info = tuple([int(x) for x in sqlite_version.split(".")])
 
 Binary = memoryview
 collections.abc.Sequence.register(Row)
+
 
 def register_adapters_and_converters():
     def adapt_date(val):
@@ -73,7 +80,8 @@ def register_adapters_and_converters():
         else:
             microseconds = 0
 
-        val = datetime.datetime(year, month, day, hours, minutes, seconds, microseconds)
+        val = datetime.datetime(year, month, day, hours, minutes,
+                                seconds, microseconds)
         return val
 
 
@@ -86,4 +94,4 @@ register_adapters_and_converters()
 
 # Clean up namespace
 
-del(register_adapters_and_converters)
+del register_adapters_and_converters

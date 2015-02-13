@@ -22,7 +22,7 @@
 # 3. This notice may not be removed or altered from any source distribution.
 
 import unittest
-import sqlite3 as sqlite
+import pysqlcipher3.dbapi2 as sqlite
 from collections.abc import Sequence
 
 class MyConnection(sqlite.Connection):

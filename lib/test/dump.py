@@ -1,7 +1,7 @@
 # Author: Paul Kippes <kippesp@gmail.com>
 
 import unittest
-import sqlite3 as sqlite
+import pysqlcipher3.dbapi2 as sqlite
 
 class DumpTests(unittest.TestCase):
     def setUp(self):

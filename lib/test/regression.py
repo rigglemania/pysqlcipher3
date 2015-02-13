@@ -23,7 +23,7 @@
 
 import datetime
 import unittest
-import sqlite3 as sqlite
+import pysqlcipher3.dbapi2 as sqlite
 
 class RegressionTests(unittest.TestCase):
     def setUp(self):
