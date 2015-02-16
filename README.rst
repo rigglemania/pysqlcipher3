@@ -34,16 +34,19 @@ You can quickly verify that your database file in indeed encrypted::
   77 bf e3 1d 65 b5 ea f7  d2 fc 98 31 23 66 a0 1e  |w...e......1#f..|
   a4 4f fa 66 49 36 84 a1  3e 0c 21 98 84 07 eb 07  |.O.fI6..>.!.....|
 
-Build against libsqlcipher
+Build against amalgamation
 --------------------------
 
-For convenience, this package uses a sqlcipher amalgamation during the regular
-install. See https://www.sqlite.org/amalgamation.html
-
 For production use, you should build against ``libsqlcipher`` installed in your
-system, you can do it like this::
+system. This is default setup install option.
 
-  python setup.py build_sqlcipher
+For convenience during development, you can use a sqlcipher amalgamation
+during the install. You will need to obtain the amalgamation from external
+sources or build it yourself from https://github.com/sqlcipher/sqlcipher
+
+To build using the amalgamation, you can do it like this::
+
+  python setup.py build_amalgamation
 
 And then::
 

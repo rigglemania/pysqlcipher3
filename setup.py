@@ -1,8 +1,9 @@
+# -*- coding: ISO-8859-1 -*-
 # setup.py: the distutils script
 #
 # Copyright (C) 2015 David Riggleman <davidriggleman@gmail.com>
 # Copyright (C) 2013 Kali Kaneko <kali@futeisha.org> (sqlcipher support)
-# Copyright (C) 2005-2010 Gerhard HÃ¤ring <gh@ghaering.de>
+# Copyright (C) 2005-2010 Gerhard Häring <gh@ghaering.de>
 #
 # This file is part of pysqlcipher.
 #
@@ -21,7 +22,6 @@
 # 2. Altered source versions must be plainly marked as such, and must not be
 #    misrepresented as being the original software.
 # 3. This notice may not be removed or altered from any source distribution.
-import cross_bdist_wininst
 import os
 import setuptools
 import sys
@@ -47,6 +47,16 @@ sources = [os.path.join("src", "python" + str(sys.version_info[0]), source)
            for source in ["module.c", "connection.c", "cursor.c", "cache.c",
                           "microprotocols.c", "prepare_protocol.c",
                           "statement.c", "util.c", "row.c"]]
+
+# define packages
+packages = [PACKAGE_NAME, PACKAGE_NAME + ".test"]
+
+if sys.version_info[0] < 3:
+    packages.append(PACKAGE_NAME + ".test.python2")
+    EXTENSION_MODULE_NAME = "._sqlite"
+else:
+    packages.append(PACKAGE_NAME + ".test.python3")
+    EXTENSION_MODULE_NAME = "._sqlite3"
 
 # Work around clang raising hard error for unused arguments
 if sys.platform == "darwin":
@@ -88,7 +98,7 @@ class AmalgationLibSQLCipherBuilder(build_ext):
         header_exists = os.path.exists(self.amalgamation_header)
         source_exists = os.path.exists(self.amalgamation_source)
         if not header_exists or not source_exists:
-            raise FileNotFoundError(self.amalgamation_message)
+            raise RuntimeError(self.amalgamation_message)
 
     def build_extension(self, ext):
         log.info(self.description)
@@ -113,7 +123,7 @@ class AmalgationLibSQLCipherBuilder(build_ext):
             openssl_conf = os.environ.get('OPENSSL_CONF')
             if not openssl_conf:
                 error_message = 'Fatal error: OpenSSL could not be detected!'
-                raise EnvironmentError(error_message)
+                raise RuntimeError(error_message)
 
             openssl = os.path.dirname(os.path.dirname(openssl_conf))
             openssl_lib_path = os.path.join(openssl, "lib")
@@ -150,9 +160,9 @@ def get_setup_args():
         platforms="ALL",
         url="https://github.com/rigglemania/pysqlcipher3",
         package_dir={PACKAGE_NAME: "lib"},
-        packages=[PACKAGE_NAME, PACKAGE_NAME + ".test"],
+        packages=packages,
         ext_modules=[Extension(
-            name=PACKAGE_NAME + "._sqlite3",
+            name=PACKAGE_NAME + EXTENSION_MODULE_NAME,
             sources=sources,
             define_macros=define_macros)
         ],
@@ -169,8 +179,7 @@ def get_setup_args():
             "Topic :: Software Development :: Libraries :: Python Modules"],
         cmdclass={
             "build_amalgamation": AmalgationLibSQLCipherBuilder,
-            "build_ext": SystemLibSQLCipherBuilder,
-            "cross_bdist_wininst": cross_bdist_wininst.bdist_wininst
+            "build_ext": SystemLibSQLCipherBuilder
         }
     )
 
@@ -178,7 +187,7 @@ def get_setup_args():
 def main():
     try:
         setuptools.setup(**get_setup_args())
-    except (FileNotFoundError, EnvironmentError) as ex:
+    except BaseException as ex:
         log.info(str(ex))
 
 if __name__ == "__main__":

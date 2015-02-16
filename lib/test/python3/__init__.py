@@ -20,15 +20,20 @@
 # 2. Altered source versions must be plainly marked as such, and must not be
 #    misrepresented as being the original software.
 # 3. This notice may not be removed or altered from any source distribution.
-import sys
 import unittest
 
-if sys.version_info[0] < 3:
-    from pysqlcipher3.test.python2 import suite
-else:
-    from pysqlcipher3.test.python3 import suite
+from pysqlcipher3.test.python3 import (dbapi, dump, factory, hooks, regression,
+    transactions, types, userfunctions)
 
 
-def test():
-    runner = unittest.TextTestRunner()
-    runner.run(suite())
+def suite():
+    return unittest.TestSuite(tuple([
+        dbapi.suite(),
+        dump.suite(),
+        factory.suite(),
+        hooks.suite(),
+        regression.suite(),
+        transactions.suite(),
+        types.suite(),
+        userfunctions.suite()
+    ]))

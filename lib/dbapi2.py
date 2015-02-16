@@ -1,8 +1,9 @@
+# -*- coding: ISO-8859-1 -*-
 # pysqlcipher3/dbapi2.py: the DB-API 2.0 interface with SQLCipher support
 #
 # Copyright (C) David Riggleman <davidriggleman@gmail.com>
 # Copyright (C) Kali Kaneko <kali@futeisha.org>
-# Copyright (C) 2010 Gerhard HÃ¤ring <gh@ghaering.de>
+# Copyright (C) 2010 Gerhard Häring <gh@ghaering.de>
 #
 # This file is part of pysqlite.
 #
@@ -23,10 +24,14 @@
 # 3. This notice may not be removed or altered from any source distribution.
 
 import datetime
+import sys
 import time
-import collections.abc
 
-from pysqlcipher3._sqlite3 import *
+if sys.version_info[0] < 3:
+    from pysqlcipher3._sqlite import *
+else:
+    from pysqlcipher3._sqlite3 import *
+
 
 paramstyle = "qmark"
 
@@ -56,8 +61,16 @@ def TimestampFromTicks(ticks):
 version_info = tuple([int(x) for x in version.split(".")])
 sqlite_version_info = tuple([int(x) for x in sqlite_version.split(".")])
 
-Binary = memoryview
-collections.abc.Sequence.register(Row)
+
+if sys.version_info[0] < 3:
+    Binary = buffer
+else:
+    Binary = memoryview
+    
+    # Python 3 allows for support of sequence protocol
+    # (supports reverse() and negative indices)
+    import collections.abc
+    collections.abc.Sequence.register(Row)
 
 
 def register_adapters_and_converters():
