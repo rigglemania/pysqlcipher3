@@ -1,6 +1,7 @@
 include MANIFEST.in
+include README.rst
 include LICENSE
-include src/*.h
 include setup.py
+include src/*/*.h
 
 global-exclude *~ *.pyc
