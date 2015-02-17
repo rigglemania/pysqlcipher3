@@ -3,5 +3,7 @@ include README.rst
 include LICENSE
 include setup.py
 include src/*/*.h
+include src/*/*.c
+include lib/test/*/*
 
 global-exclude *~ *.pyc
