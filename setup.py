@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2015 David Riggleman <davidriggleman@gmail.com>
 # Copyright (C) 2013 Kali Kaneko <kali@futeisha.org> (sqlcipher support)
-# Copyright (C) 2005-2010 Gerhard Häring <gh@ghaering.de>
+# Copyright (C) 2005-2010 Gerhard HÃ¤ring <gh@ghaering.de>
 #
 # This file is part of pysqlcipher.
 #
@@ -33,7 +33,7 @@ from setuptools import Extension
 # If you need to change anything, it should be enough to change setup.cfg.
 
 PACKAGE_NAME = "pysqlcipher3"
-VERSION = '3.0.0'
+VERSION = '1.0.0'
 LONG_DESCRIPTION = \
     """Python interface to SQLCipher
 
