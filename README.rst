@@ -1,10 +1,11 @@
 pysqlcipher3
 ============
 
-This library is a fork of pysqlcipher targeted for use with Python 3.
-It is still in the beta state, although this library contains minimal
-new code and instead heavily pulls from the core Python sqlite source
-code while linking against libsqlcipher.
+This library is a fork of pysqlcipher targeted for use with Python 3, 
+although support for Python 2 is still maintained. It is still in the 
+beta state, although this library contains minimal new code and 
+instead heavily pulls from the core Python sqlite source code while 
+linking against libsqlcipher.
 
 
 Original code (c) 2004-2007 Gerhard Häring
