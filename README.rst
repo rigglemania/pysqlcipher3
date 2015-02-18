@@ -21,7 +21,7 @@ You have to pass the ``PRAGMA key`` before doing any operations::
   from pysqlcipher3 import dbapi2 as sqlite
   conn = sqlite.connect('test.db')
   c = conn.cursor()
-  c.execute("PRAGMA key='test'")
+  c.execute("PRAGMA key='password'")
   c.execute('''create table stocks (date text, trans text, symbol text, qty real, price real)''')
   c.execute("""insert into stocks values ('2006-01-05','BUY','RHAT',100,35.14)""")
   conn.commit()
@@ -35,12 +35,14 @@ You can quickly verify that your database file in indeed encrypted::
   77 bf e3 1d 65 b5 ea f7  d2 fc 98 31 23 66 a0 1e  |w...e......1#f..|
   a4 4f fa 66 49 36 84 a1  3e 0c 21 98 84 07 eb 07  |.O.fI6..>.!.....|
 
-Build against amalgamation
---------------------------
+Build against libsqlcipher (default install option)
+---------------------------------------------------
+For production use, you should build against ``libsqlcipher``, which must
+be installed on your system prior to installation. Consult your operating
+system documentation for how to install SQL Cipher. 
 
-For production use, you should build against ``libsqlcipher`` installed in your
-system. This is default setup install option.
-
+Build against amalgamation (alternate install option)
+-----------------------------------------------------
 For convenience during development, you can use a sqlcipher amalgamation
 during the install. You will need to obtain the amalgamation from external
 sources or build it yourself from https://github.com/sqlcipher/sqlcipher
