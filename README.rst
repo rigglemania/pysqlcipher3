@@ -35,14 +35,15 @@ You can quickly verify that your database file in indeed encrypted::
   77 bf e3 1d 65 b5 ea f7  d2 fc 98 31 23 66 a0 1e  |w...e......1#f..|
   a4 4f fa 66 49 36 84 a1  3e 0c 21 98 84 07 eb 07  |.O.fI6..>.!.....|
 
-Build against libsqlcipher (default install option)
----------------------------------------------------
+Build against libsqlcipher
+--------------------------
 For production use, you should build against ``libsqlcipher``, which must
 be installed on your system prior to installation. Consult your operating
-system documentation for how to install SQL Cipher. 
+system documentation for how to install SQL Cipher. This is the
+default install option.
 
-Build against amalgamation (alternate install option)
------------------------------------------------------
+Build against amalgamation
+--------------------------
 For convenience during development, you can use a sqlcipher amalgamation
 during the install. You will need to obtain the amalgamation from external
 sources or build it yourself from https://github.com/sqlcipher/sqlcipher
