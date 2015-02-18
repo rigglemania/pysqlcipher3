@@ -35,12 +35,13 @@ from setuptools import Extension
 PACKAGE_NAME = "pysqlcipher3"
 VERSION = '1.0.1'
 LONG_DESCRIPTION = \
-    """Python interface to SQLCipher
+"""Python interface to SQLCipher
 
-    pysqlcipher is an interface to the SQLite 3.x embedded relational
-    database engine. It is almost fully compliant with the Python database API
-    version 2.0. At the same time, it also exposes the unique features of
-    SQLCipher."""
+pysqlcipher3 is an interface to the SQLite 3.x embedded relational
+database engine. It is almost fully compliant with the Python database API
+version 2.0. At the same time, it also exposes the unique features of
+SQLCipher. Prior to installation, libsqlcipher must already be installed
+on your system, with the process dependent on your operating system."""
 
 # define sqlite sources
 sources = [os.path.join("src", "python" + str(sys.version_info[0]), source)
