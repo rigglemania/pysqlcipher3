@@ -12,7 +12,7 @@ Original code (c) 2004-2007 Gerhard Häring
 
 Packaging for SQLCipher (c) 2013-2014 Kali Kaneko
 
-Python 3 Packaging for SQLCipher (c) 2015 David Riggleman
+Python 3 packaging for SQLCipher (c) 2015 David Riggleman
 
 Usage
 -----
