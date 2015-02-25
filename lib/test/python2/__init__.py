@@ -23,7 +23,7 @@
 import unittest
 
 from pysqlcipher3.test.python2 import (dbapi, dump, factory, hooks, regression,
-    transactions, types, userfunctions)
+    transactions, types, userfunctions, sqlcipher)
 
 
 def suite():
@@ -35,5 +35,6 @@ def suite():
         regression.suite(),
         transactions.suite(),
         types.suite(),
-        userfunctions.suite()
+        userfunctions.suite(),
+        sqlcipher.suite()
     ]))
