@@ -68,7 +68,7 @@ Note: make sure to select all the GCC options (VC++, C++, etc). If you are unsur
 
 3) Confirm that the OPENSSL_CONF environment variable is set properly in evironment variables. See http://www.computerhope.com/issues/ch000549.htm
 
-Note: This should not be root openssl path (ex: c:\openssl-Win32), but instead should be the path to the config file (ex: c:\openssl-Win32\bin\openssl.cfg)
+Note: This should not be root openssl path (ex: C:/openssl-Win32), but instead should be the path to the config file (ex: C:/openssl-Win32/bin/openssl.cfg)
 
 
 4) Copy the openssl folder in (C:/OpenSSL-Win32/include/openssl) directory to the VC include directory (ex: C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include)
