@@ -79,7 +79,7 @@ Note: Confirm the following path exists (../../VC/include/openssl/aes.h)
 
 Note: If you have python 64 bit installed you may have to uninstall it before installing python 32 bit.
 
-6) Use SQL Cipher 3 amalgamations or you may compile the latest SQL Cipher amalgamation by following this tutorial http://www.jerryrw.com/howtocompile.php. 
+6) Use the SQL Cipher 3 amalgamations or you may compile the latest SQL Cipher amalgamation by following this tutorial http://www.jerryrw.com/howtocompile.php. 
 
 7) Click start, Run, cmd. In the CMD prompt navigate to the folder where you checked out this repository. Run "python setup.py build_amalgamation"
 
@@ -87,4 +87,4 @@ Note: If you have python 64 bit installed you may have to uninstall it before in
 
 9) Test the new library by attempting to decrypt a database.
 
-Note: If the decrypt fails please check that you have the most recent amalagamtion files.
+Note: If the decrypt fails please check that you have the correct amalagamation files.
