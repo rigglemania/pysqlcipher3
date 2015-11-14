@@ -63,17 +63,22 @@ How to Compile pysqlcipher3 on Windows
 
 1) Installed the free VS 2015 Community Edition 
 
-Note: make sure to select all the GCC options (VC++, C++, etc). If you are unsure select all options.
+Note: make sure to select all the GCC options (VC++, C++, etc).
+If you are unsure select all options.
 
-2) Installed a prebuilt OpenSSL binary (Win32 OpenSSL v1.0.2d or later) from https://slproweb.com/products/Win32OpenSSL.html
-
-
-3) Confirm that the OPENSSL_CONF environment variable is set properly in evironment variables. See http://www.computerhope.com/issues/ch000549.htm
-
-Note: This should not be root openssl path (ex: C:/openssl-Win32), but instead should be the path to the config file (ex: C:/openssl-Win32/bin/openssl.cfg)
+2) Installed a prebuilt OpenSSL binary (Win32 OpenSSL v1.0.2d or later) 
+from https://slproweb.com/products/Win32OpenSSL.html
 
 
-4) Copy the openssl folder in (C:/OpenSSL-Win32/include/openssl) directory to the VC include directory (ex: C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include)
+3) Confirm that the OPENSSL_CONF environment variable is set properly 
+in evironment variables. See http://www.computerhope.com/issues/ch000549.htm
+
+Note: This should not be root openssl path (ex: C:/openssl-Win32), 
+but instead should be the path to the config file (ex: C:/openssl-Win32/bin/openssl.cfg)
+
+
+4) Copy the openssl folder in (C:/OpenSSL-Win32/include/openssl) directory
+to the VC include directory (ex: C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include)
 
 Note: Confirm the following path exists (../../VC/include/openssl/aes.h)
 
@@ -81,9 +86,11 @@ Note: Confirm the following path exists (../../VC/include/openssl/aes.h)
 
 Note: If you have python 64 bit installed you may have to uninstall it before installing python 32 bit.
 
-6) Use the SQL Cipher 3 amalgamations or you may compile the latest SQL Cipher amalgamation by following this tutorial http://www.jerryrw.com/howtocompile.php. 
+6) Use the SQL Cipher 3 amalgamations or you may compile the latest 
+SQL Cipher amalgamation by following this tutorial http://www.jerryrw.com/howtocompile.php. 
 
-7) Click start, Run, cmd. In the CMD prompt navigate to the folder where you checked out this repository. Run "python setup.py build_amalgamation"
+7) Click start, Run, cmd. In the CMD prompt navigate to the folder 
+where you checked out this repository. Run "python setup.py build_amalgamation"
 
 8) Then run "python setup.py install"
 
