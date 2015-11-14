@@ -40,7 +40,9 @@ Build against libsqlcipher
 For production use, you should build against ``libsqlcipher``, which must
 be installed on your system prior to installation. Consult your operating
 system documentation for how to install SQL Cipher. This is the
-default install option.
+default install option. On Linux based systems install the latest SQL Cipher 
+by cloning https://github.com/sqlcipher/sqlcipher and following the build 
+instructions.
 
 Build against amalgamation
 --------------------------
