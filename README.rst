@@ -79,16 +79,12 @@ Note: Confirm the following path exists (../../VC/include/openssl/aes.h)
 
 Note: If you have python 64 bit installed you may have to uninstall it before installing python 32 bit.
 
-6) Download amalgation from "https://downloads.leap.se/libs/pysqlcipher/amalgamation-sqlcipher-2.1.0.zip". 
+6) Use SQL Cipher 3 amalgamations or you may compile the latest SQL Cipher amalgamation by following this tutorial http://www.jerryrw.com/howtocompile.php. 
 
-Note: Whatever amalgamation you use, it needs to be for SQLCipher and not just SQLite. For SQL Cipher 3 you may compile the latest amagamation by following this tutorial http://www.jerryrw.com/howtocompile.php. 
+7) Click start, Run, cmd. In the CMD prompt navigate to the folder where you checked out this repository. Run "python setup.py build_amalgamation"
 
-7) In the folder where you checked out this repository create a new folder called amalgamation. Copy the sqlite3.c and sqlite3.h to the newly created amalgamation folder.
+8) Then run "python setup.py install"
 
-8) Click start, Run, cmd. In the CMD prompt navigate to the folder where you checked out this repository. Run "python setup.py build_amalgamation"
-
-9) Then run "python setup.py install"
-
-10) Test the new library by attempting to decrypt a database.
+9) Test the new library by attempting to decrypt a database.
 
 Note: If the decrypt fails please check that you have the most recent amalagamtion files.
