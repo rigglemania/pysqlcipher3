@@ -55,3 +55,40 @@ To build using the amalgamation, you can do it like this::
 And then::
 
   python setup.py install
+  
+How to Compile pysqlcipher3 on Windows 
+--------------------------------------
+
+1) Installed the free VS 2015 Community Edition 
+
+Note: make sure to select all the GCC options (VC++, C++, etc). If you are unsure select all options.
+
+2) Installed a prebuilt OpenSSL binary (Win32 OpenSSL v1.0.2d or later) from https://slproweb.com/products/Win32OpenSSL.html
+
+
+3) Confirm that the OPENSSL_CONF environment variable is set properly in evironment variables. See http://www.computerhope.com/issues/ch000549.htm
+
+Note: This should not be root openssl path (ex: c:\openssl-Win32), but instead should be the path to the config file (ex: c:\openssl-Win32\bin\openssl.cfg)
+
+
+4) Copy the openssl folder in (C:/OpenSSL-Win32/include/openssl) directory to the VC include directory (ex: C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include)
+
+Note: Confirm the following path exists (../../VC/include/openssl/aes.h)
+
+5) Install Python 3.5 (32 bit). 
+
+Note: If you have python 64 bit installed you may have to uninstall it before installing python 32 bit.
+
+6) Download amalgation from "https://downloads.leap.se/libs/pysqlcipher/amalgamation-sqlcipher-2.1.0.zip". 
+
+Note: Whatever amalgamation you use, it needs to be for SQLCipher and not just SQLite. For SQL Cipher 3 you may compile the latest amagamation by following this tutorial http://www.jerryrw.com/howtocompile.php. 
+
+7) In the folder where you checked out this repository create a new folder called amalgamation. Copy the sqlite3.c and sqlite3.h to the newly created amalgamation folder.
+
+8) Click start, Run, cmd. In the CMD prompt navigate to the folder where you checked out this repository. Run "python setup.py build_amalgamation"
+
+9) Then run "python setup.py install"
+
+10) Test the new library by attempting to decrypt a database.
+
+Note: If the decrypt fails please check that you have the most recent amalagamtion files.
