@@ -37,16 +37,18 @@ You can quickly verify that your database file in indeed encrypted::
 
 Build against libsqlcipher
 --------------------------
-For production use, you should build against ``libsqlcipher``, which must
-be installed on your system prior to installation. Consult your operating
-system documentation for how to install SQL Cipher. This is the
-default install option.
+This is the default install option. For production use, you should build 
+against ``libsqlcipher``, which must be installed on your system prior to 
+installation. Consult your operating system documentation for how to 
+install SQL Cipher. You can also manually build SQL Cipher by cloning 
+https://github.com/sqlcipher/sqlcipher and following the build instructions.
 
 Build against amalgamation
 --------------------------
 For convenience during development, you can use a sqlcipher amalgamation
 during the install. You will need to obtain the amalgamation from external
-sources or build it yourself from https://github.com/sqlcipher/sqlcipher
+sources or build it yourself from https://github.com/sqlcipher/sqlcipher.
+
 
 To build using the amalgamation, you can do it like this::
 
@@ -55,3 +57,19 @@ To build using the amalgamation, you can do it like this::
 And then::
 
   python setup.py install
+
+**Windows Setup Instructions (using Visual Studio)**
+
+1. **Install Visual Studio 2015**: if you do not have a paid license, the Community Edition will work fine. Make sure to select all the C++ options during the installation process.
+
+2. **Install OpenSSL**: you can either download the source and build locally or install a prebuilt OpenSSL binary from https://slproweb.com/products/Win32OpenSSL.html (use the latest version)
+
+3. **Confirm that the OPENSSL_CONF environment variable is set properly**: this should not be root OpenSSL path (ex: C:\\openssl-Win32), but instead should be the path to the config file (ex: C:\\openssl-Win32\\bin\\openssl.cfg)
+
+4. **Copy the OpenSSL folder (C:\\openssl-Win32\\include\\openssl) to the VC include directory (ex: C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\include)**: confirm the following path exists (\\VC\\include\\openssl\\aes.h)
+
+5. **Install the latest version of Python 3 (32-bit)**: if you have Python 64-bit installed, you may have to uninstall it before installing Python 32-bit.
+
+6. **Use the SQL Cipher 3 amalgamation**: if needed, directions for building SQL Cipher can be found on the following tutorial: http://www.jerryrw.com/howtocompile.ph
+
+7. **Follow the general instructions for building the amalgamation**
