@@ -1,13 +1,12 @@
 import os
 import shutil
 import unittest
+import tempfile
 import pysqlcipher3.dbapi2 as sqlite
 
 
 class SqlCipherTests(unittest.TestCase):
 
-    temp_dir = 'temp'
-    db = os.path.join(temp_dir, 'test.db')
     password = 'testing'
 
     def testCorrectPasswordEntered(self):
@@ -46,18 +45,21 @@ class SqlCipherTests(unittest.TestCase):
         conn.executescript("SELECT sqlcipher_export('encrypted')")
         conn.executescript("DETACH DATABASE encrypted")
         conn.close()
-
+        if os.path.exists(self.db):
+            os.remove(self.db)
         os.rename(encrypted_db, self.db)
         self.assertDatabaseError(None)
         self.assertSuccessfulQuery(self.password)
 
     def setUp(self):
-        if not os.path.exists(self.temp_dir):
-            os.mkdir(self.temp_dir)
+        self.temp_dir = tempfile.mkdtemp()
+        self.db = os.path.join(self.temp_dir, 'test.db')
 
     def tearDown(self):
         if os.path.exists(self.temp_dir):
             shutil.rmtree(self.temp_dir)
+        del self.temp_dir
+        del self.db
 
     def createDatabase(self, encrypt=True):
         conn = sqlite.connect(self.db)
