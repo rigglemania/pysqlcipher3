@@ -58,7 +58,7 @@ And then::
 
   python setup.py install
 
-**Windows Setup Instructions (using Visual Studio)**
+**32 Bit Windows Setup Instructions (using Visual Studio)**
 
 1. **Install Visual Studio 2015**: if you do not have a paid license, the Community Edition will work fine. Make sure to select all the C++ options during the installation process.
 
@@ -69,7 +69,19 @@ And then::
 4. **Copy the OpenSSL folder (C:\\openssl-Win32\\include\\openssl) to the VC include directory (ex: C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\include)**: confirm the following path exists (\\VC\\include\\openssl\\aes.h)
 
 5. **Install the latest version of Python 3 (32-bit)**: if you have Python 64-bit installed, you may have to uninstall it before installing Python 32-bit.
-
+  
 6. **Use the SQL Cipher 3 amalgamation**: if needed, directions for building SQL Cipher can be found on the following tutorial: http://www.jerryrw.com/howtocompile.ph
 
 7. **Follow the general instructions for building the amalgamation**
+
+**64 Bit Windows Setup Instructions (using Visual Studio)**
+
+Follow the same instructions as above except for the following:
+
+1. **Make sure that you are using OpenSSL-Win64**
+
+2. **Set the PATH to the Win64 environment**
+
+3. **Copy the OpenSSL folder**
+
+4. **Build the amalgamation and install with the latest Python x64**
