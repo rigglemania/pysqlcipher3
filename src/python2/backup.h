@@ -25,7 +25,7 @@
 #define PYSQLITE_BACKUP_H
 #include "Python.h"
 
-#include "sqlite3.h"
+#include "sqlcipher/sqlite3.h"
 #include "connection.h"
 
 typedef struct
