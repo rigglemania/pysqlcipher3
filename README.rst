@@ -1,10 +1,10 @@
 pysqlcipher3
 ============
 
-This library is a fork of pysqlcipher targeted for use with Python 3, 
-although support for Python 2 is still maintained. It is still in the 
-beta state, although this library contains minimal new code and 
-instead heavily pulls from the core Python sqlite source code while 
+This library is a fork of pysqlcipher targeted for use with Python 3,
+although support for Python 2 is still maintained. It is still in the
+beta state, although this library contains minimal new code and
+instead heavily pulls from the core Python sqlite source code while
 linking against libsqlcipher.
 
 
@@ -29,7 +29,7 @@ You have to pass the ``PRAGMA key`` before doing any operations::
 
 You can quickly verify that your database file in indeed encrypted::
 
-  hexdump -C test.db                                                                                                        
+  hexdump -C test.db
   ab 7f 61 7a 33 9d 07 f4  08 68 c9 b0 4f e3 34 60  |..az3....h..O.4`|
   bb 9d 9c 3d 9e ce 69 57  b6 2f 36 c4 fd 13 bd 61  |...=..iW./6....a|
   77 bf e3 1d 65 b5 ea f7  d2 fc 98 31 23 66 a0 1e  |w...e......1#f..|
@@ -37,10 +37,10 @@ You can quickly verify that your database file in indeed encrypted::
 
 Build against libsqlcipher
 --------------------------
-This is the default install option. For production use, you should build 
-against ``libsqlcipher``, which must be installed on your system prior to 
-installation. Consult your operating system documentation for how to 
-install SQL Cipher. You can also manually build SQL Cipher by cloning 
+This is the default install option. For production use, you should build
+against ``libsqlcipher``, which must be installed on your system prior to
+installation. Consult your operating system documentation for how to
+install SQL Cipher. You can also manually build SQL Cipher by cloning
 https://github.com/sqlcipher/sqlcipher and following the build instructions.
 
 Build against amalgamation
@@ -69,7 +69,7 @@ And then::
 4. **Copy the OpenSSL folder (C:\\openssl-Win32\\include\\openssl) to the VC include directory (ex: C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\include)**: confirm the following path exists (\\VC\\include\\openssl\\aes.h)
 
 5. **Install the latest version of Python 3 (32-bit)**: if you have Python 64-bit installed, you may have to uninstall it before installing Python 32-bit.
-  
+
 6. **Use the SQL Cipher 3 amalgamation**: if needed, directions for building SQL Cipher can be found on the following tutorial: http://www.jerryrw.com/howtocompile.ph
 
 7. **Follow the general instructions for building the amalgamation**
@@ -85,3 +85,14 @@ Follow the same instructions as above except for the following:
 3. **Copy the OpenSSL folder**
 
 4. **Build the amalgamation and install with the latest Python x64**
+
+Running Tests
+-------------
+
+To run tests with Python 3.4 to Python 3.7, first install `Tox <https://tox.readthedocs.io>`__.
+You will also need each Python interpreter available on your system. You can install them with
+`pyenv <https://github.com/pyenv/pyenv>`__
+
+Run the tests by calling ``tox`` at the command line.
+
+You can specify the particular version of Python with the ``-e`` flag, e.g. ``tox -e py36`` for Python 3.6.
