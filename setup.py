@@ -181,7 +181,9 @@ def get_setup_args():
         cmdclass={
             "build_amalgamation": AmalgationLibSQLCipherBuilder,
             "build_ext": SystemLibSQLCipherBuilder
-        }
+        },
+        setup_requires=['pytest-runner'],
+        tests_require=['pytest'],
     )
 
 
