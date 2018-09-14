@@ -1,7 +1,7 @@
 #-*- coding: iso-8859-1 -*-
 # pysqlite2/test/transactions.py: tests transactions
 #
-# Copyright (C) 2005-2007 Gerhard Häring <gh@ghaering.de>
+# Copyright (C) 2005-2007 Gerhard Hï¿½ring <gh@ghaering.de>
 #
 # This file is part of pysqlite.
 #
@@ -52,7 +52,7 @@ class TransactionTests(unittest.TestCase):
         except OSError:
             pass
 
-    def CheckDMLdoesAutoCommitBefore(self):
+    def testDMLdoesAutoCommitBefore(self):
         self.cur1.execute("create table test(i)")
         self.cur1.execute("insert into test(i) values (5)")
         self.cur1.execute("create table test2(j)")
@@ -60,14 +60,14 @@ class TransactionTests(unittest.TestCase):
         res = self.cur2.fetchall()
         self.assertEqual(len(res), 1)
 
-    def CheckInsertStartsTransaction(self):
+    def testInsertStartsTransaction(self):
         self.cur1.execute("create table test(i)")
         self.cur1.execute("insert into test(i) values (5)")
         self.cur2.execute("select i from test")
         res = self.cur2.fetchall()
         self.assertEqual(len(res), 0)
 
-    def CheckUpdateStartsTransaction(self):
+    def testUpdateStartsTransaction(self):
         self.cur1.execute("create table test(i)")
         self.cur1.execute("insert into test(i) values (5)")
         self.con1.commit()
@@ -76,7 +76,7 @@ class TransactionTests(unittest.TestCase):
         res = self.cur2.fetchone()[0]
         self.assertEqual(res, 5)
 
-    def CheckDeleteStartsTransaction(self):
+    def testDeleteStartsTransaction(self):
         self.cur1.execute("create table test(i)")
         self.cur1.execute("insert into test(i) values (5)")
         self.con1.commit()
@@ -85,7 +85,7 @@ class TransactionTests(unittest.TestCase):
         res = self.cur2.fetchall()
         self.assertEqual(len(res), 1)
 
-    def CheckReplaceStartsTransaction(self):
+    def testReplaceStartsTransaction(self):
         self.cur1.execute("create table test(i)")
         self.cur1.execute("insert into test(i) values (5)")
         self.con1.commit()
@@ -95,7 +95,7 @@ class TransactionTests(unittest.TestCase):
         self.assertEqual(len(res), 1)
         self.assertEqual(res[0][0], 5)
 
-    def CheckToggleAutoCommit(self):
+    def testToggleAutoCommit(self):
         self.cur1.execute("create table test(i)")
         self.cur1.execute("insert into test(i) values (5)")
         self.con1.isolation_level = None
@@ -111,7 +111,7 @@ class TransactionTests(unittest.TestCase):
         res = self.cur2.fetchall()
         self.assertEqual(len(res), 1)
 
-    def CheckRaiseTimeout(self):
+    def testRaiseTimeout(self):
         if sqlite.sqlite_version_info < (3, 2, 2):
             # This will fail (hang) on earlier versions of sqlite.
             # Determine exact version it was fixed. 3.2.1 hangs.
@@ -126,7 +126,7 @@ class TransactionTests(unittest.TestCase):
         except:
             self.fail("should have raised an OperationalError")
 
-    def CheckLocking(self):
+    def testLocking(self):
         """
         This tests the improved concurrency with pysqlite 2.3.4. You needed
         to roll back con2 before you could commit con1.
@@ -147,7 +147,7 @@ class TransactionTests(unittest.TestCase):
         # NO self.con2.rollback() HERE!!!
         self.con1.commit()
 
-    def CheckRollbackCursorConsistency(self):
+    def testRollbackCursorConsistency(self):
         """
         Checks if cursors on the connection are set into a "reset" state
         when a rollback is done on the connection.
@@ -172,17 +172,17 @@ class SpecialCommandTests(unittest.TestCase):
         self.con = sqlite.connect(":memory:")
         self.cur = self.con.cursor()
 
-    def CheckVacuum(self):
+    def testVacuum(self):
         self.cur.execute("create table test(i)")
         self.cur.execute("insert into test(i) values (5)")
         self.cur.execute("vacuum")
 
-    def CheckDropTable(self):
+    def testDropTable(self):
         self.cur.execute("create table test(i)")
         self.cur.execute("insert into test(i) values (5)")
         self.cur.execute("drop table test")
 
-    def CheckPragma(self):
+    def testPragma(self):
         self.cur.execute("create table test(i)")
         self.cur.execute("insert into test(i) values (5)")
         self.cur.execute("pragma count_changes=1")
