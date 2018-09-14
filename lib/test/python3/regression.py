@@ -138,13 +138,11 @@ class RegressionTests(unittest.TestCase):
         try:
             self.con.execute("select 'xxx' || ? || 'yyy' colname",
                              (bytes(bytearray([250])),)).fetchone()
-            failure = "should have raised an OperationalError with detailed description"
+            self.fail("should have raised an OperationalError with detailed description")
         except sqlite.OperationalError as e:
             msg = e.args[0]
-            if not msg.startswith("Could not decode to UTF-8 column 'colname' with text 'xxx"):
-                failure = "OperationalError did not have expected description text"
-        if failure:
-            self.fail(failure)
+            if not msg.startswith("Could not decode to UTF-8"):
+                self.fail("OperationalError did not have expected description text")
 
     def testRegisterAdapter(self):
         """
