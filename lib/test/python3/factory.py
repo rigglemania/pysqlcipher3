@@ -1,7 +1,7 @@
 #-*- coding: iso-8859-1 -*-
 # pysqlite2/test/factory.py: tests for the various factories in pysqlite
 #
-# Copyright (C) 2005-2007 Gerhard Häring <gh@ghaering.de>
+# Copyright (C) 2005-2007 Gerhard Hï¿½ring <gh@ghaering.de>
 #
 # This file is part of pysqlite.
 #
@@ -47,7 +47,7 @@ class ConnectionFactoryTests(unittest.TestCase):
     def tearDown(self):
         self.con.close()
 
-    def CheckIsInstance(self):
+    def testIsInstance(self):
         self.assertIsInstance(self.con, MyConnection)
 
 class CursorFactoryTests(unittest.TestCase):
@@ -57,7 +57,7 @@ class CursorFactoryTests(unittest.TestCase):
     def tearDown(self):
         self.con.close()
 
-    def CheckIsInstance(self):
+    def testIsInstance(self):
         cur = self.con.cursor(factory=MyCursor)
         self.assertIsInstance(cur, MyCursor)
 
@@ -65,7 +65,7 @@ class RowFactoryTestsBackwardsCompat(unittest.TestCase):
     def setUp(self):
         self.con = sqlite.connect(":memory:")
 
-    def CheckIsProducedByFactory(self):
+    def testIsProducedByFactory(self):
         cur = self.con.cursor(factory=MyCursor)
         cur.execute("select 4+5 as foo")
         row = cur.fetchone()
@@ -79,12 +79,12 @@ class RowFactoryTests(unittest.TestCase):
     def setUp(self):
         self.con = sqlite.connect(":memory:")
 
-    def CheckCustomFactory(self):
+    def testCustomFactory(self):
         self.con.row_factory = lambda cur, row: list(row)
         row = self.con.execute("select 1, 2").fetchone()
         self.assertIsInstance(row, list)
 
-    def CheckSqliteRowIndex(self):
+    def testSqliteRowIndex(self):
         self.con.row_factory = sqlite.Row
         row = self.con.execute("select 1 as a, 2 as b").fetchone()
         self.assertIsInstance(row, sqlite.Row)
@@ -111,21 +111,21 @@ class RowFactoryTests(unittest.TestCase):
         with self.assertRaises(IndexError):
             row[2**1000]
 
-    def CheckSqliteRowIter(self):
+    def testSqliteRowIter(self):
         """Checks if the row object is iterable"""
         self.con.row_factory = sqlite.Row
         row = self.con.execute("select 1 as a, 2 as b").fetchone()
         for col in row:
             pass
 
-    def CheckSqliteRowAsTuple(self):
+    def testSqliteRowAsTuple(self):
         """Checks if the row object can be converted to a tuple"""
         self.con.row_factory = sqlite.Row
         row = self.con.execute("select 1 as a, 2 as b").fetchone()
         t = tuple(row)
         self.assertEqual(t, (row['a'], row['b']))
 
-    def CheckSqliteRowAsDict(self):
+    def testSqliteRowAsDict(self):
         """Checks if the row object can be correctly converted to a dictionary"""
         self.con.row_factory = sqlite.Row
         row = self.con.execute("select 1 as a, 2 as b").fetchone()
@@ -133,7 +133,7 @@ class RowFactoryTests(unittest.TestCase):
         self.assertEqual(d["a"], row["a"])
         self.assertEqual(d["b"], row["b"])
 
-    def CheckSqliteRowHashCmp(self):
+    def testSqliteRowHashCmp(self):
         """Checks if the row object compares and hashes correctly"""
         self.con.row_factory = sqlite.Row
         row_1 = self.con.execute("select 1 as a, 2 as b").fetchone()
@@ -153,7 +153,7 @@ class RowFactoryTests(unittest.TestCase):
         self.assertNotEqual(row_1, row_3)
         self.assertNotEqual(hash(row_1), hash(row_3))
 
-    def CheckSqliteRowAsSequence(self):
+    def testSqliteRowAsSequence(self):
         """ Checks if the row object can act like a sequence """
         self.con.row_factory = sqlite.Row
         row = self.con.execute("select 1 as a, 2 as b").fetchone()
@@ -169,30 +169,30 @@ class TextFactoryTests(unittest.TestCase):
     def setUp(self):
         self.con = sqlite.connect(":memory:")
 
-    def CheckUnicode(self):
-        austria = "Österreich"
+    def testUnicode(self):
+        austria = "ï¿½sterreich"
         row = self.con.execute("select ?", (austria,)).fetchone()
         self.assertEqual(type(row[0]), str, "type of row[0] must be unicode")
 
-    def CheckString(self):
+    def testString(self):
         self.con.text_factory = bytes
-        austria = "Österreich"
+        austria = "ï¿½sterreich"
         row = self.con.execute("select ?", (austria,)).fetchone()
         self.assertEqual(type(row[0]), bytes, "type of row[0] must be bytes")
         self.assertEqual(row[0], austria.encode("utf-8"), "column must equal original data in UTF-8")
 
-    def CheckCustom(self):
+    def testCustom(self):
         self.con.text_factory = lambda x: str(x, "utf-8", "ignore")
-        austria = "Österreich"
+        austria = "ï¿½sterreich"
         row = self.con.execute("select ?", (austria,)).fetchone()
         self.assertEqual(type(row[0]), str, "type of row[0] must be unicode")
         self.assertTrue(row[0].endswith("reich"), "column must contain original data")
 
-    def CheckOptimizedUnicode(self):
+    def testOptimizedUnicode(self):
         # In py3k, str objects are always returned when text_factory
         # is OptimizedUnicode
         self.con.text_factory = sqlite.OptimizedUnicode
-        austria = "Österreich"
+        austria = "ï¿½sterreich"
         germany = "Deutchland"
         a_row = self.con.execute("select ?", (austria,)).fetchone()
         d_row = self.con.execute("select ?", (germany,)).fetchone()
@@ -208,25 +208,25 @@ class TextFactoryTestsWithEmbeddedZeroBytes(unittest.TestCase):
         self.con.execute("create table test (value text)")
         self.con.execute("insert into test (value) values (?)", ("a\x00b",))
 
-    def CheckString(self):
+    def testString(self):
         # text_factory defaults to str
         row = self.con.execute("select value from test").fetchone()
         self.assertIs(type(row[0]), str)
         self.assertEqual(row[0], "a\x00b")
 
-    def CheckBytes(self):
+    def testBytes(self):
         self.con.text_factory = bytes
         row = self.con.execute("select value from test").fetchone()
         self.assertIs(type(row[0]), bytes)
         self.assertEqual(row[0], b"a\x00b")
 
-    def CheckBytearray(self):
+    def testBytearray(self):
         self.con.text_factory = bytearray
         row = self.con.execute("select value from test").fetchone()
         self.assertIs(type(row[0]), bytearray)
         self.assertEqual(row[0], b"a\x00b")
 
-    def CheckCustom(self):
+    def testCustom(self):
         # A custom factory should receive a bytes argument
         self.con.text_factory = lambda x: x
         row = self.con.execute("select value from test").fetchone()
@@ -235,19 +235,3 @@ class TextFactoryTestsWithEmbeddedZeroBytes(unittest.TestCase):
 
     def tearDown(self):
         self.con.close()
-
-def suite():
-    connection_suite = unittest.makeSuite(ConnectionFactoryTests, "Check")
-    cursor_suite = unittest.makeSuite(CursorFactoryTests, "Check")
-    row_suite_compat = unittest.makeSuite(RowFactoryTestsBackwardsCompat, "Check")
-    row_suite = unittest.makeSuite(RowFactoryTests, "Check")
-    text_suite = unittest.makeSuite(TextFactoryTests, "Check")
-    text_zero_bytes_suite = unittest.makeSuite(TextFactoryTestsWithEmbeddedZeroBytes, "Check")
-    return unittest.TestSuite((connection_suite, cursor_suite, row_suite_compat, row_suite, text_suite, text_zero_bytes_suite))
-
-def test():
-    runner = unittest.TextTestRunner()
-    runner.run(suite())
-
-if __name__ == "__main__":
-    test()
