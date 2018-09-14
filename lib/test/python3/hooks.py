@@ -241,18 +241,3 @@ class TraceCallbackTests(unittest.TestCase):
         self.assertTrue(any(unicode_value in stmt for stmt in traced_statements),
                         "Unicode data %s garbled in trace callback: %s"
                         % (ascii(unicode_value), ', '.join(map(ascii, traced_statements))))
-
-
-
-def suite():
-    collation_suite = unittest.makeSuite(CollationTests, "Check")
-    progress_suite = unittest.makeSuite(ProgressTests, "Check")
-    trace_suite = unittest.makeSuite(TraceCallbackTests, "Check")
-    return unittest.TestSuite((collation_suite, progress_suite, trace_suite))
-
-def test():
-    runner = unittest.TextTestRunner()
-    runner.run(suite())
-
-if __name__ == "__main__":
-    test()

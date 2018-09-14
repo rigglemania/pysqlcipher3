@@ -385,19 +385,3 @@ class DateTimeTests(unittest.TestCase):
         self.cur.execute("select ts from test")
         ts2 = self.cur.fetchone()[0]
         self.assertEqual(ts, ts2)
-
-def suite():
-    sqlite_type_suite = unittest.makeSuite(SqliteTypeTests, "Check")
-    decltypes_type_suite = unittest.makeSuite(DeclTypesTests, "Check")
-    colnames_type_suite = unittest.makeSuite(ColNamesTests, "Check")
-    adaptation_suite = unittest.makeSuite(ObjectAdaptationTests, "Check")
-    bin_suite = unittest.makeSuite(BinaryConverterTests, "Check")
-    date_suite = unittest.makeSuite(DateTimeTests, "Check")
-    return unittest.TestSuite((sqlite_type_suite, decltypes_type_suite, colnames_type_suite, adaptation_suite, bin_suite, date_suite))
-
-def test():
-    runner = unittest.TextTestRunner()
-    runner.run(suite())
-
-if __name__ == "__main__":
-    test()

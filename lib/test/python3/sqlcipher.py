@@ -100,16 +100,3 @@ class SqlCipherTests(unittest.TestCase):
             self.assertEqual('file is not a database', str(ex))
         finally:
             conn.close()
-
-
-def suite():
-    sqlcipher_suite = unittest.makeSuite(SqlCipherTests, "test")
-    return unittest.TestSuite((sqlcipher_suite,))
-
-
-def test():
-    runner = unittest.TextTestRunner()
-    runner.run(suite())
-
-if __name__ == "__main__":
-    test()

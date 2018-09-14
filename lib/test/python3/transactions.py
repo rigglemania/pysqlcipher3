@@ -190,15 +190,3 @@ class SpecialCommandTests(unittest.TestCase):
     def tearDown(self):
         self.cur.close()
         self.con.close()
-
-def suite():
-    default_suite = unittest.makeSuite(TransactionTests, "Check")
-    special_command_suite = unittest.makeSuite(SpecialCommandTests, "Check")
-    return unittest.TestSuite((default_suite, special_command_suite))
-
-def test():
-    runner = unittest.TextTestRunner()
-    runner.run(suite())
-
-if __name__ == "__main__":
-    test()

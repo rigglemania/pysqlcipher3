@@ -445,24 +445,3 @@ class AuthorizerLargeIntegerTests(AuthorizerTests):
         if arg2 == 'c2' or arg1 == 't2':
             return 2**32
         return sqlite.SQLITE_OK
-
-
-def suite():
-    function_suite = unittest.makeSuite(FunctionTests, "Check")
-    aggregate_suite = unittest.makeSuite(AggregateTests, "Check")
-    authorizer_suite = unittest.makeSuite(AuthorizerTests)
-    return unittest.TestSuite((
-            function_suite,
-            aggregate_suite,
-            authorizer_suite,
-            unittest.makeSuite(AuthorizerRaiseExceptionTests),
-            unittest.makeSuite(AuthorizerIllegalTypeTests),
-            unittest.makeSuite(AuthorizerLargeIntegerTests),
-        ))
-
-def test():
-    runner = unittest.TextTestRunner()
-    runner.run(suite())
-
-if __name__ == "__main__":
-    test()

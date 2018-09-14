@@ -235,19 +235,3 @@ class TextFactoryTestsWithEmbeddedZeroBytes(unittest.TestCase):
 
     def tearDown(self):
         self.con.close()
-
-def suite():
-    connection_suite = unittest.makeSuite(ConnectionFactoryTests, "Check")
-    cursor_suite = unittest.makeSuite(CursorFactoryTests, "Check")
-    row_suite_compat = unittest.makeSuite(RowFactoryTestsBackwardsCompat, "Check")
-    row_suite = unittest.makeSuite(RowFactoryTests, "Check")
-    text_suite = unittest.makeSuite(TextFactoryTests, "Check")
-    text_zero_bytes_suite = unittest.makeSuite(TextFactoryTestsWithEmbeddedZeroBytes, "Check")
-    return unittest.TestSuite((connection_suite, cursor_suite, row_suite_compat, row_suite, text_suite, text_zero_bytes_suite))
-
-def test():
-    runner = unittest.TextTestRunner()
-    runner.run(suite())
-
-if __name__ == "__main__":
-    test()
