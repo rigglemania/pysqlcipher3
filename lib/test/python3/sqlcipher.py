@@ -83,14 +83,14 @@ class SqlCipherTests(unittest.TestCase):
     def queryData(self, conn):
         return conn.execute('select col from tbl').fetchone()[0]
 
-    def testSuccessfulQuery(self, password):
+    def assertSuccessfulQuery(self, password):
         conn = sqlite.connect(self.db)
         self.setPassword(conn, password)
         col_value = self.queryData(conn)
         self.assertEqual('data', col_value)
         conn.close()
 
-    def testDatabaseError(self, password):
+    def assertDatabaseError(self, password):
         conn = sqlite.connect(self.db)
         self.setPassword(conn, password)
         try:
