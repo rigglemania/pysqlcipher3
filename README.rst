@@ -1,6 +1,8 @@
 pysqlcipher3
 ============
 
+**Note: this project is no longer being actively maintained. Security vulnerabilities may exist in this code. Use at your own risk.**
+
 This library is a fork of pysqlcipher targeted for use with Python 3, 
 although support for Python 2 is still maintained. It is still in the 
 beta state, although this library contains minimal new code and 
