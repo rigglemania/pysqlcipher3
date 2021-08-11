@@ -87,3 +87,19 @@ Follow the same instructions as above except for the following:
 3. **Copy the OpenSSL folder**
 
 4. **Build the amalgamation and install with the latest Python x64**
+
+SQLCipher compatibility issues
+----------------------------
+The encryption has default compatibility with the SQLCipher version installed on your machine.
+You have to execute ``PRAGMA cipher_compatibility = 3`` before doing any operations on a database encrypted with SQLCipher version 3 when a newer version is installed.
+Keep in mind, you have to add ``PRAGMA cipher_compatibility`` after ``PRAGMA key``::
+
+  from pysqlcipher3 import dbapi2 as sqlite
+  conn = sqlite.connect('test.db')
+  c = conn.cursor()
+  c.execute("PRAGMA key='password'")
+  c.execute("PRAGMA cipher_compatibility = 3")
+  c.execute('''create table stocks (date text, trans text, symbol text, qty real, price real)''')
+  c.execute("""insert into stocks values ('2006-01-05','BUY','RHAT',100,35.14)""")
+  conn.commit()
+  c.close()
