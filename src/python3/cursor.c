@@ -509,7 +509,7 @@ PyObject* _pysqlite_query_execute(pysqlite_Cursor* self, int multiple, PyObject*
         pysqlite_statement_reset(self->statement);
     }
 
-    operation_cstr = _PyUnicode_AsStringAndSize(operation, &operation_len);
+    operation_cstr = PyUnicode_AsUTF8AndSize(operation, &operation_len);
     if (operation_cstr == NULL)
         goto error;
 
