@@ -1211,7 +1211,7 @@ static int pysqlite_connection_set_isolation_level(pysqlite_Connection* self, Py
             return -1;
         }
 
-        statement = _PyUnicode_AsStringAndSize(begin_statement, &size);
+        statement = PyUnicode_AsUTF8AndSize(begin_statement, &size);
         if (!statement) {
             Py_DECREF(begin_statement);
             return -1;

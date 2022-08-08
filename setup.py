@@ -33,7 +33,7 @@ from setuptools import Extension
 # If you need to change anything, it should be enough to change setup.cfg.
 
 PACKAGE_NAME = "pysqlcipher3"
-VERSION = '1.0.5'
+VERSION = '1.1.0'
 LONG_DESCRIPTION = \
 """Python interface to SQLCipher
 
@@ -153,6 +153,7 @@ def get_setup_args():
     return dict(
         name=PACKAGE_NAME,
         version=VERSION,
+        python_requires=">=3.3",
         description="DB-API 2.0 interface for SQLCIPHER 3.x",
         long_description=LONG_DESCRIPTION,
         author="David Riggleman",
