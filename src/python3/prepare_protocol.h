@@ -39,3 +39,10 @@ int pysqlite_prepare_protocol_setup_types(void);
 
 #define UNKNOWN (-1)
 #endif
+
+// In python >=3.11 Py_TYPE has changed https://docs.python.org/3.11/whatsnew/3.11.html
+#if PY_VERSION_HEX < 0x030900A4 && !defined(Py_SET_TYPE)
+static inline void _Py_SET_TYPE(PyObject *ob, PyTypeObject *type)
+{ ob->ob_type = type; }
+#define Py_SET_TYPE(ob, type) _Py_SET_TYPE((PyObject*)(ob), type)
+#endif
