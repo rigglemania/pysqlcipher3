@@ -150,6 +150,26 @@ class AmalgationLibSQLCipherBuilder(build_ext):
 
 
 def get_setup_args():
+    extension = Extension(
+            name=PACKAGE_NAME + EXTENSION_MODULE_NAME,
+            sources=sources,
+            define_macros=define_macros
+    )
+
+    # on mac check for install of sqlcipher
+    if (sys.platform == "darwin"
+        and os.path.exists('/usr/local/include/sqlcipher')
+        and os.path.exists('/usr/local/lib/libsqlcipher.dylib')):
+
+        extension = Extension(
+                name=PACKAGE_NAME + EXTENSION_MODULE_NAME,
+                sources=sources,
+                define_macros=define_macros,
+                libraries=['sqlcipher'],  # Specify the library name
+                library_dirs=['/usr/local/lib'],  # Specify the directory containing libsqlcipher
+                include_dirs=['/usr/local/include/sqlcipher'],  # Specify the directory containing header files
+        )
+
     return dict(
         name=PACKAGE_NAME,
         version=VERSION,
@@ -163,11 +183,7 @@ def get_setup_args():
         url="https://github.com/rigglemania/pysqlcipher3",
         package_dir={PACKAGE_NAME: "lib"},
         packages=packages,
-        ext_modules=[Extension(
-            name=PACKAGE_NAME + EXTENSION_MODULE_NAME,
-            sources=sources,
-            define_macros=define_macros)
-        ],
+        ext_modules=[extension],
         classifiers=[
             "Development Status :: 4 - Beta",
             "Intended Audience :: Developers",
