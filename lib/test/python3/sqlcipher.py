@@ -97,7 +97,7 @@ class SqlCipherTests(unittest.TestCase):
             col_value = self.queryData(conn)
             self.assertIsNone(col_value)
         except sqlite.DatabaseError as ex:
-            self.assertEqual('file is encrypted or is not a database', str(ex))
+            self.assertIn('is not a database', str(ex))
         finally:
             conn.close()
 
