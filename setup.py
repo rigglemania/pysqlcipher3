@@ -61,7 +61,7 @@ else:
 
 # Work around clang raising hard error for unused arguments
 if sys.platform == "darwin":
-    os.environ['CFLAGS'] = "-Qunused-arguments"
+    os.environ['CFLAGS'] += " -Qunused-arguments -I/opt/homebrew/opt/sqlcipher/include -L/opt/homebrew/opt/sqlcipher/lib -L/opt/homebrew/opt/openssl/lib/ -lcrypto"
     log.info("CFLAGS: " + os.environ['CFLAGS'])
 
 

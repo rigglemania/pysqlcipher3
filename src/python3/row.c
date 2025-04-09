@@ -41,7 +41,7 @@ pysqlite_row_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
 
     assert(type != NULL && type->tp_alloc != NULL);
 
-    if (!_PyArg_NoKeywords("Row()", kwargs))
+    if (!PyArg_ValidateKeywordArguments(kwargs))
         return NULL;
     if (!PyArg_ParseTuple(args, "OO", &cursor, &data))
         return NULL;
@@ -79,9 +79,9 @@ PyObject* pysqlite_row_item(pysqlite_Row* self, Py_ssize_t idx)
 PyObject* pysqlite_row_subscript(pysqlite_Row* self, PyObject* idx)
 {
     Py_ssize_t _idx;
-    char* key;
+    const char* key;
     Py_ssize_t nitems, i;
-    char* compare_key;
+    const char* compare_key;
 
     char* p1;
     char* p2;
