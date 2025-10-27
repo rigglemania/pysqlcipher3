@@ -220,25 +220,32 @@ void pysqlite_do_all_statements(pysqlite_Connection* self, int action, int reset
 
     for (i = 0; i < PyList_Size(self->statements); i++) {
         weakref = PyList_GetItem(self->statements, i);
-        statement = PyWeakref_GetObject(weakref);
-        if (statement != Py_None) {
-            Py_INCREF(statement);
-            if (action == ACTION_RESET) {
-                (void)pysqlite_statement_reset((pysqlite_Statement*)statement);
-            } else {
-                (void)pysqlite_statement_finalize((pysqlite_Statement*)statement);
+        if (PyWeakref_GetRef(weakref, &statement) > 0) {
+            if (statement != Py_None) {
+                Py_INCREF(statement);
+                if (action == ACTION_RESET) {
+                    (void)pysqlite_statement_reset((pysqlite_Statement*)statement);
+                } else {
+                    (void)pysqlite_statement_finalize((pysqlite_Statement*)statement);
+                }
+                Py_DECREF(statement);
             }
-            Py_DECREF(statement);
         }
     }
 
     if (reset_cursors) {
         for (i = 0; i < PyList_Size(self->cursors); i++) {
             weakref = PyList_GetItem(self->cursors, i);
-            cursor = (pysqlite_Cursor*)PyWeakref_GetObject(weakref);
-            if ((PyObject*)cursor != Py_None) {
+            PyObject *obj;
+            int ok = PyWeakref_GetRef(weakref, &obj);
+            if (ok > 0 && obj != Py_None) {
+                cursor = (pysqlite_Cursor*)obj;
                 cursor->reset = 1;
+                // release the strong reference
+                Py_DECREF(obj);
             }
+            // if ok == 0, reference is dead
+            // if ok < 0, error occurred
         }
     }
 }
@@ -524,17 +531,36 @@ _pysqlite_set_result(sqlite3_context* context, PyObject* py_val)
     } else if (PyObject_CheckBuffer(py_val)) {
         const char* buffer;
         Py_ssize_t buflen;
+        #if PY_VERSION_HEX < 0x030C0000
+        // Python <3.12
         if (PyObject_AsCharBuffer(py_val, &buffer, &buflen) != 0) {
             PyErr_SetString(PyExc_ValueError,
                             "could not convert BLOB to buffer");
             return -1;
         }
+        #else
+        // Python >=3.12
+        Py_buffer view;
+        if (PyObject_GetBuffer(py_val, &view, PyBUF_SIMPLE) != 0) {
+            PyErr_SetString(PyExc_ValueError,
+                            "could not convert BLOB to buffer");
+            return -1;
+        }
+        buffer = view.buf;
+        buflen = view.len;
+        #endif
+
         if (buflen > INT_MAX) {
             PyErr_SetString(PyExc_OverflowError,
                             "BLOB longer than INT_MAX bytes");
             return -1;
         }
         sqlite3_result_blob(context, buffer, (int)buflen, SQLITE_TRANSIENT);
+
+        #if PY_VERSION_HEX >= 0x030C0000
+        // Python >=3.12
+        PyBuffer_Release(&view);
+        #endif
     } else {
         return -1;
     }
@@ -786,12 +812,22 @@ static void _pysqlite_drop_unused_statement_references(pysqlite_Connection* self
 
     for (i = 0; i < PyList_Size(self->statements); i++) {
         weakref = PyList_GetItem(self->statements, i);
-        if (PyWeakref_GetObject(weakref) != Py_None) {
-            if (PyList_Append(new_list, weakref) != 0) {
-                Py_DECREF(new_list);
-                return;
+        PyObject *obj;
+        int ok = PyWeakref_GetRef(weakref, &obj);
+        if (ok > 0) {
+            // weakref is alive
+            if (obj != Py_None) {
+                if (PyList_Append(new_list, weakref) != 0) {
+                    Py_DECREF(obj);
+                    Py_DECREF(new_list);
+                    return;
+                }
             }
+            // release strong reference
+            Py_DECREF(obj);
         }
+        // ok == 0 => weakref is dead, skip
+        // ok < 0 => error occurred, could log if desired
     }
 
     Py_DECREF(self->statements);
@@ -818,12 +854,22 @@ static void _pysqlite_drop_unused_cursor_references(pysqlite_Connection* self)
 
     for (i = 0; i < PyList_Size(self->cursors); i++) {
         weakref = PyList_GetItem(self->cursors, i);
-        if (PyWeakref_GetObject(weakref) != Py_None) {
-            if (PyList_Append(new_list, weakref) != 0) {
-                Py_DECREF(new_list);
-                return;
+        PyObject *obj;
+        int ok = PyWeakref_GetRef(weakref, &obj);
+        if (ok > 0) {
+            // weakref is alive
+            if (obj != Py_None) {
+                if (PyList_Append(new_list, weakref) != 0) {
+                    Py_DECREF(obj);
+                    Py_DECREF(new_list);
+                    return;
+                }
             }
+            // release strong reference
+            Py_DECREF(obj);
         }
+        // ok == 0 => weakref is dead, skip
+        // ok < 0 => error occurred, could log if desired
     }
 
     Py_DECREF(self->cursors);
@@ -918,7 +964,7 @@ static int _authorizer_callback(void* user_arg, int action, const char* arg1, co
     }
     else {
         if (PyLong_Check(ret)) {
-            rc = _PyLong_AsInt(ret);
+            rc = PyLong_AsLong(ret);
             if (rc == -1 && PyErr_Occurred()) {
                 if (_enable_callback_tracebacks)
                     PyErr_Print();
@@ -1507,7 +1553,7 @@ pysqlite_connection_create_collation(pysqlite_Connection* self, PyObject* args)
     PyObject* retval;
     Py_ssize_t i, len;
     _Py_IDENTIFIER(upper);
-    char *uppercase_name_str;
+    const char *uppercase_name_str;
     int rc;
     unsigned int kind;
     void *data;
@@ -1543,7 +1589,7 @@ pysqlite_connection_create_collation(pysqlite_Connection* self, PyObject* args)
         }
     }
 
-    uppercase_name_str = _PyUnicode_AsString(uppercase_name);
+    uppercase_name_str = PyUnicode_AsUTF8AndSize(uppercase_name, &len);
     if (!uppercase_name_str)
         goto finally;
 
